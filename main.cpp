@@ -24,7 +24,6 @@ int main() {
 
 	cout << "waiting for grandchild pid: " << grandchild_pid << endl;
 
-	int grandchild_status = -1;
 	siginfo_t info = {};
 	waitid(P_PID, grandchild_pid, &info, WEXITED);
 
