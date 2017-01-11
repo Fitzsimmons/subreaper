@@ -7,9 +7,7 @@
 using namespace std;
 
 int main() {
-
-	int res = prctl(PR_SET_CHILD_SUBREAPER, 1, 0, 0, 0);
-	cout << "res: " << res << endl;
+	prctl(PR_SET_CHILD_SUBREAPER, 1, 0, 0, 0);
 
 	FILE* process;
 	process = popen("ruby layer2.rb", "r");
@@ -22,12 +20,12 @@ int main() {
 	wait(&child_status);
 	cout << "Child exited with " << child_status << endl;
 
-	cout << "waiting for grandchild pid: " << grandchild_pid << endl;
+	cout << "waiting for grandchild pid to exit: " << grandchild_pid << endl;
 
-	siginfo_t info = {};
-	waitid(P_PID, grandchild_pid, &info, WEXITED);
+	int status;
+	waitpid(grandchild_pid, &status, 0);
 
-	cout << info.si_pid << " exited with " << info.si_status << endl;
+	cout << grandchild_pid << " exited with " << WEXITSTATUS(status) << endl;
 
 	return 0;
 }

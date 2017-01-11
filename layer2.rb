@@ -1,6 +1,5 @@
-
 pid = fork do
-  sleep 4
+  sleep 3
   exit 20
 end
 
